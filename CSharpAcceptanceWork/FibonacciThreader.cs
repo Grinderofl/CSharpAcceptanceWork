@@ -60,8 +60,9 @@ namespace CSharpAcceptanceWork
                     if (settings.Configuration.ThreadToUse != settings.CurrentThread)
                     {
                         settings.CurrentThread = settings.Configuration.ThreadToUse;
-                        settings.Threads[thread - 1] = new Thread(() => RunThread(settings));
-                        settings.Threads[thread - 1].Start();
+                        settings.Threads[settings.CurrentThread - 1] = new Thread(() => RunThread(settings));
+                        settings.Threads[settings.CurrentThread - 1].Start();
+                        settings.Threads[thread - 1].Abort();
                         break;
                     }
                 }
