@@ -17,7 +17,7 @@ namespace CSharpAcceptanceWork
         private readonly string _configurationFileName;
         private readonly ThreadSettings _settings;
         private DateTime _lastUpdate = DateTime.MinValue;
-        private ILog _logger;
+        private readonly ILog _logger;
 
         private readonly Configuration _defaults = new Configuration()
                                                        {
@@ -127,6 +127,12 @@ namespace CSharpAcceptanceWork
                     // Possible to save a backup here into Roaming etc.
                     using (var stream = new FileStream(_configurationFileName, FileMode.Open))
                         _settings.Configuration = (Configuration) serializer.Deserialize(stream);
+                    // Make sure we have at least two thread frequencies specified here
+                    if (_settings.Configuration.ThreadFrequencyInMilliseconds.Count < 2)
+                        _settings.Configuration.ThreadFrequencyInMilliseconds.AddRange(
+                            _defaults.ThreadFrequencyInMilliseconds.GetRange(
+                                _settings.Configuration.ThreadFrequencyInMilliseconds.Count,
+                                2 - _settings.Configuration.ThreadFrequencyInMilliseconds.Count).ToList());
                 }
                 catch
                 {
