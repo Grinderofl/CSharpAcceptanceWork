@@ -6,16 +6,11 @@ using System.Threading.Tasks;
 
 namespace CSharpAcceptanceWork
 {
+    [Serializable]
     public class Configuration
     {
-        public int ThreadCount
-        {
-            get { return ConfigurationReader.ReadConfigurationEntry<int>(SettingNames.ThreadCount); }
-        }
-
-        public int ThreadToUse
-        {
-            get { return ConfigurationReader.ReadConfigurationEntry<int>(SettingNames.ThreadToUse); }
-        }
+        public int ThreadToUse { get; set; }
+        public int RefreshIntervalInSeconds { get; set; }
+        public List<int> ThreadFrequencyInMilliseconds { get; set; }
     }
 }
