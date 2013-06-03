@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using log4net;
 
 namespace CSharpAcceptanceWork
 {
@@ -16,6 +17,7 @@ namespace CSharpAcceptanceWork
         private readonly string _configurationFileName;
         private readonly ThreadSettings _settings;
         private DateTime _lastUpdate = DateTime.MinValue;
+        private ILog _logger;
 
         private readonly Configuration _defaults = new Configuration()
                                                        {
@@ -26,6 +28,7 @@ namespace CSharpAcceptanceWork
 
         public FibonacciThreader (string configurationFileName)
         {
+            _logger = LogManager.GetLogger(typeof (Program));
             _configurationFileName = configurationFileName;
             _settings = new ThreadSettings();
         }
@@ -82,19 +85,19 @@ namespace CSharpAcceptanceWork
         {
             _lastUpdate = DateTime.Now;
             Console.Clear();
-            Console.WriteLine("Current thread: " + _settings.CurrentThread);
-            Console.WriteLine("Time to next calculation: " + (long) Math.Abs(
+            _logger.Info("Current thread: " + _settings.CurrentThread);
+            _logger.Info("Time to next calculation: " + (long) Math.Abs(
                 (DateTime.Now -
                  _settings.LastCalculation.AddMilliseconds(
                      _settings.Configuration.ThreadFrequencyInMilliseconds[_settings.CurrentThread - 1])).
                     TotalMilliseconds));
-            Console.WriteLine("Current result: " + _settings.HighValue);
-            Console.WriteLine("Current progression: " + _settings.Progression);
-            Console.WriteLine("Time to next refresh: " + (long) Math.Abs(
+            _logger.Info("Current result: " + _settings.HighValue);
+            _logger.Info("Current progression: " + _settings.Progression);
+            _logger.Info("Time to next refresh: " + (long) Math.Abs(
                 (DateTime.Now - _settings.LastRefresh.AddSeconds(_settings.Configuration.RefreshIntervalInSeconds)).
                     TotalMilliseconds));
             //Console.WriteLine("Threads: " + Process.GetCurrentProcess().Threads.Count);
-            Console.WriteLine("Number of operations per minute: " + string.Format("{0:0.00}", (_settings.Progression / (float)(DateTime.Now - _settings.ProgramStart).TotalSeconds) * 60));
+            _logger.Info("Number of operations per minute: " + string.Format("{0:0.00}", (_settings.Progression / (float)(DateTime.Now - _settings.ProgramStart).TotalSeconds) * 60));
             //Console.WriteLine("Number of seconds since start: " + (DateTime.Now - _settings.ProgramStart).TotalSeconds);
         }
 
