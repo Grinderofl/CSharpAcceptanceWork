@@ -2,10 +2,12 @@ CSharpAcceptanceWork
 ====================
 
 Testable skills:
+
 • The ability to quickly and accurately write code that meets the given requirements
 
 
 Assignment:
+
 Write a console application that has a minimum of two independent threads, interacting with each other. Threads in turn consider a simple numerical arithmetic progression (take Fibonacci sequence as an example) so that the only one thread is working in a time and all other threads are sleeping (do nothing). But control can be passed to another thread thru the configuration file by manual changes in configuration file.  Next thread continues with the previous. So the natural numerical arithmetic progression order persists. Frequency of calculation operations progression for each of the threads is set separately in a single configuration file, which is stored inside the jar-file (its resources) and in the external directory. In the same file the current working thread given. 
 
 
